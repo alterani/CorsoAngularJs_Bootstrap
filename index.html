@@ -1,18 +1,73 @@
-<!-- // http://www.html.it/pag/52866/direttive-predefinite-bind-hide-e-show/ -->
+<!-- // http://www.html.it/pag/53182/ng-options/ -->
 
-<!doctype html>
-<html>
-<title>Hello Angular</title>
+<!DOCTYPE HTML PUBLIC “-//W3C//DTD HTML 4.01 Transitional//EN”> <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>AlTERANI </title>
+</head>
 <body>
-<h1>Hello Angular</h1>
+
+<style type="text/css">
+    .rosso {color: red}
+    .verde {color: green; font-weight: bold; font-size: 20;}
+    .blu {color: blue}
+    .giallo {color: yellow }
+    .normale {font-style: normal}
+    .grassetto {font-weight: bold}
+    .corsivo {font-style: italic}
+</style>
+
+
+<h1>GRAFICA CON ANGULARJS</h1>
 
 <div ng-app="myApp">
 
     <div ng-controller="userController">
-        <p>Nome: <input type="text" ng-model="utente.nome"></p>
+        <p>Nome:    <input type="text" ng-model="utente.nome"></p>
         <p>Cognome: <input type="text" ng-model="utente.cognome"></p>
-        <p ng-controller="greetingController">{{saluta()}}</p>
+        <p ng-if="utente.nome || utente.cognome">{{saluta()}}</p>
+
+
+        <p>Colore: <input type="text" ng-model="grafica.colore"></p>
+
+        <div ng-switch="grafica.colore">
+            <span ng-switch-when="rosso" style="color:red">{{grafica.colore}}</span>
+            <span ng-switch-when="verde" style="color:green">{{grafica.colore}}</span>
+            <span ng-switch-when="blu"   style="color:blue">{{grafica.colore}}</span>
+            <span ng-switch-default      style="color:black">{{grafica.colore}}</span>
+        </div>
+
+        <p>Colore: <input type="text" ng-model="grafica.colore"></p>
+        <p>Stile: <input type="text" ng-model="grafica.stile"></p>
+
+        <p ng-class="[grafica.colore, grafica.stile]">È stato scelto il colore {{grafica.colore}}</p>
+
+
+        <p>Crea la tua password: <input type="password" ng-model="utente.password"></p>
+        <p ng-class="{'rosso': utente.password.length < 4, 'giallo': utente.password.length >=4 && utente.password.length < 8, 'verde': utente.password.length >= 8}"> Robustezza della password</p>
+
+        <ul>
+            <li ng-repeat="nome in elencoNomi">{{nome}}</li>
+        </ul>
+
+        <ul>
+            <li ng-repeat="persona in persone">
+                N. {{$index + 1}} - {{persona.nome}} {{persona.cognome}}
+            </li>
+        </ul>
+
+        <table>
+            <tr><th>Indice</th><th>Nome</th><th>Cognome</th><th>Città</th></tr>
+
+            <tr ng-repeat="persona in persone">
+                <td>{{$index + 1}}</td><td>{{persona.nome}}</td><td>{{persona.cognome}}</td><td>{{persona.citta}}</td>
+            </tr>
+        </table>
+
+
     </div>
+
+
 </div>
 
 
@@ -22,13 +77,23 @@
     angular.module("myApp", [])
             .controller("userController",
             function($scope) {
-                $scope.utente = {nome: "Mario", cognome: "Rossi"};
-            })
-            .controller("greetingController",
-            function($scope) {
+                $scope.utente = {nome: "Mario", cognome: "Rossi", eta: 0, password: "ee"};
+                $scope.grafica = {colore: "rosso", stile: "normale"};
+                $scope.elencoNomi = ["Andrea", "Marco", "Giovanni", "Roberto"];
+                $scope.persone = [
+                    { nome: "Andrea",   cognome: "Rossi",  citta: "Roma"    },
+                    { nome: "Marco",    cognome: "Verdi",  citta: "Milano"  },
+                    { nome: "Giovanni", cognome: "Neri",   citta: "Napoli"  },
+                    { nome: "Roberto",  cognome: "Gialli", citta: "Palermo" }
+                ];
+                $scope.elencoCitta = ["Roma", "Milano", "Napoli", "Palermo"];
                 $scope.saluta = function() {
                     return "Buongiorno " + $scope.utente.nome + " " + $scope.utente.cognome + "!"
                 };
+            })
+            .controller("greetingController",
+            function($scope) {
+                $scope.salutiamoci = {generale: "Ciao a tutti"};
             });
 </script>
 </body>
