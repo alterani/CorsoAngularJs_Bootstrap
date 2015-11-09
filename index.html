@@ -1,9 +1,10 @@
-<!-- // http://www.html.it/pag/53182/ng-options/ -->
+<!-- http://www.html.it/pag/54118/configurazione-del-routing/ -->
 
 <!DOCTYPE HTML PUBLIC “-//W3C//DTD HTML 4.01 Transitional//EN”> <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>AlTERANI </title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>AlTERANI </title>
 </head>
 <body>
 
@@ -15,6 +16,13 @@
     .normale {font-style: normal}
     .grassetto {font-weight: bold}
     .corsivo {font-style: italic}
+    .validClass {background-color: #90ee90}
+    .invalidClass {background-color: #ffa07a}
+    .ng-valid {border-color: green}
+    .ng-invalid {border-color: red}
+    .ng-dirty{background-color: #ffffe0}
+    .ng.pristine{background-color: #87cefa}
+
 </style>
 
 
@@ -22,79 +30,164 @@
 
 <div ng-app="myApp">
 
+    <div ng-controller="controllerEsercizi">
+        <select ng-model="esercizioScelto"
+                ng-options="esercizio.nome as esercizio.nome for esercizio in listaEsercizi"
+                >
+        </select>
+
+        <p>Hai selezionato l'esercizio: {{esercizioScelto}}</p>
+
+
+
+
+
     <div ng-controller="userController">
-        <p>Nome:    <input type="text" ng-model="utente.nome"></p>
-        <p>Cognome: <input type="text" ng-model="utente.cognome"></p>
-        <p ng-if="utente.nome || utente.cognome">{{saluta()}}</p>
 
 
-        <p>Colore: <input type="text" ng-model="grafica.colore"></p>
+        <div ng-if="esercizioScelto=='esercizio 1'">
+            <form name="myForm" ng-submit="invia(utente)" novalidate>
+                <div ng-show="myForm.$dirty">Form modificata</div>
+                <div ng-show="myForm.$pristine">Form non modificata</div>
 
-        <div ng-switch="grafica.colore">
-            <span ng-switch-when="rosso" style="color:red">{{grafica.colore}}</span>
-            <span ng-switch-when="verde" style="color:green">{{grafica.colore}}</span>
-            <span ng-switch-when="blu"   style="color:blue">{{grafica.colore}}</span>
-            <span ng-switch-default      style="color:black">{{grafica.colore}}</span>
+                <p>Nome:    <input type="text"
+                                   ng-model="utente.nome"
+                                   name="nomeUtente"
+                                   ng-maxlength="20"
+                                   ng-required="true"
+                                   ng-class="{'': myForm.nomeUtente.$pristine,
+                                                'validClass': myForm.nomeUtente.$valid,
+                                                'invalidClass': myForm.nomeUtente.$invalid}"
+                            >
+                    <div ng-show="myForm.nomeUtente.$invalid">
+                        La compilazione non è valida: errore generico
+                    </div>
+                    <div ng-show="myForm.nomeUtente.$error.maxlength">
+                        Gestine errore max lenght: Il nome utente non può superare i 20 caratteri
+                    </div>
+
+                    <div ng-show="myForm.nomeUtente.$error.required">
+                        Gestine errore max required: Il nome utente è obbligatorio
+                    </div>
+                </p>
+                <p>Cognome: <input type="text" ng-model="utente.cognome" ng-model-options="{debounce: 3000}"></p>
+                <p> Cittadinanza Italiana <input type="checkbox" ng-model="utente.cittadinanzaItaliana" ng-true-value="'si'" ng-false-value="'no'" ></p>
+                <p>Maschio <input type="radio" ng-model="utente.sesso" value="maschio"></p>
+                <p>Femmina <input type="radio" ng-model="utente.sesso" value="femmina"></p>
+                <p>-----------</p>
+                <p> Esempio Data-Binding con ritardo</p>
+                <p>Cognome: {{utente.cognome}}</p>
+                <p ng-if="utente.nome || utente.cognome">{{saluta()}}</p>
+                <button type="submit" ng-disabled="myForm.$invalid || !myForm.$dirty ">Invia</button>
+            </form>
         </div>
 
-        <p>Colore: <input type="text" ng-model="grafica.colore"></p>
-        <p>Stile: <input type="text" ng-model="grafica.stile"></p>
+        <div ng-if="esercizioScelto=='esercizio 2'">
+            <p>Colore: <input type="text" ng-model="grafica.colore"></p>
 
-        <p ng-class="[grafica.colore, grafica.stile]">È stato scelto il colore {{grafica.colore}}</p>
+            <div ng-switch="grafica.colore">
+                <span ng-switch-when="rosso" style="color:red">{{grafica.colore}}</span>
+                <span ng-switch-when="verde" style="color:green">{{grafica.colore}}</span>
+                <span ng-switch-when="blu"   style="color:blue">{{grafica.colore}}</span>
+                <span ng-switch-default      style="color:black">{{grafica.colore}}</span>
+            </div>
 
+            <p>Colore: <input type="text" ng-model="grafica.colore"></p>
+            <p>Stile: <input type="text" ng-model="grafica.stile"></p>
 
-        <p>Crea la tua password: <input type="password" ng-model="utente.password"></p>
-        <p ng-class="{'rosso': utente.password.length < 4, 'giallo': utente.password.length >=4 && utente.password.length < 8, 'verde': utente.password.length >= 8}"> Robustezza della password</p>
+            <p ng-class="[grafica.colore, grafica.stile]">È stato scelto il colore {{grafica.colore}}</p>
+        </div>
 
-        <ul>
-            <li ng-repeat="nome in elencoNomi">{{nome}}</li>
-        </ul>
+        <div ng-if="esercizioScelto=='esercizio 3'">
+            <p>Crea la tua password: <input type="password" ng-model="utente.password"></p>
+            <p ng-class="{'rosso': utente.password.length < 4, 'giallo': utente.password.length >=4 && utente.password.length < 8, 'verde': utente.password.length >= 8}"> Robustezza della password</p>
+        </div>
 
-        <ul>
-            <li ng-repeat="persona in persone">
-                N. {{$index + 1}} - {{persona.nome}} {{persona.cognome}}
-            </li>
-        </ul>
+        <div ng-if="esercizioScelto=='esercizio 4'">
+            <ul>
+                <li ng-repeat="nome in elencoNomi">{{nome}}</li>
+            </ul>
 
-        <table>
-            <tr><th>Indice</th><th>Nome</th><th>Cognome</th><th>Città</th></tr>
+            <ul>
+                <li ng-repeat="persona in persone">
+                    N. {{$index + 1}} - {{persona.nome}} {{persona.cognome}}
+                </li>
+            </ul>
+        </div>
+        <div ng-if="esercizioScelto=='esercizio 5'">
+            <table>
+                <tr><th>Indice</th><th>Nome</th><th>Cognome</th><th>Città</th></tr>
 
-            <tr ng-repeat="persona in persone">
-                <td>{{$index + 1}}</td><td>{{persona.nome}}</td><td>{{persona.cognome}}</td><td>{{persona.citta}}</td>
-            </tr>
-        </table>
+                <tr ng-repeat="persona in persone">
+                    <td>{{$index + 1}}</td><td>{{persona.nome}}</td><td>{{persona.cognome}}</td><td>{{persona.citta}}</td>
+                </tr>
+            </table>
+        </div>
 
+        <div ng-if="esercizioScelto=='esercizio 6'">
+            <select ng-model="selectedItem"
+                    ng-options="citta.nome group by citta.regione for citta in elencoCitta">
+            </select>
+        </div>
 
+        <div ng-show="esercizioScelto=='esercizio 7'">
+                <input type="number" ng-model="numero1"/>
+                +
+                <input type="number" ng-model="numero2"/>
+                =
+                <input type="number" ng-model="risultato"/>
+
+                <button ng-click="sommare()">Add</button>
+
+        </div>
+        <div ng-if="esercizioScelto=='esercizio 8'">
+
+            <p>{{"Ciao da enrico" | uppercase | limitTo:7}}</p>
+
+            <p> Filtra per nome: <input type="text" ng-model="filtro"> </p>
+            <ul>
+                <li ng-repeat="citta in elencoCitta | filter:{nome:filtro} | limitTo:3">{{citta.nome}}</li>
+            </ul>
+
+            <p>numero elementi array: {{numeroElementi}}</p>
+
+        </div>
+
+        <div ng-if="esercizioScelto=='esercizio 9'">
+            <p>Chiamo un elemento del controller che usa un servizio: {{x_servizio}}</p>
+
+            <p>Chiamo un elemento del controller che usa un factory: {{y_factory}}</p>
+        </div>
+
+    </div> <!-- Fine div controlle userControllerr-->
+
+    <div ng-if="esercizioScelto=='esercizio 10'">
+        <div ng-controller="cittaController">
+            <p>Città: <input type="text" ng-model="nome"/></p>
+            <p>Regione: <input type="text" ng-model="regione"/></p>
+            <p><button ng-click="aggiungiCitta()">Aggiungi</button></p>
+        </div> <!-- Fine div controller cittaControlle-->
+
+        <div ng-controller="elencoController">
+            <ul>
+                <li ng-repeat="citta in elencoCitta">{{citta.nome}}</li>
+            </ul>
+        </div> <!-- Fine div controlle elencoController-->
     </div>
 
+     <div ng-if="esercizioScelto=='esercizio 11'" ng-view></div>
+    </div> <!-- Fine div controlle controllerEsercizi-->
 
 </div>
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+<script type="text/javascript"
+        src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/modulo_controllers.js"></script>
+<script src="js/modulo_servizi.js"></script>
+<script src="js/modulo_factory.js"></script>
 
-<script type="text/javascript">
-    angular.module("myApp", [])
-            .controller("userController",
-            function($scope) {
-                $scope.utente = {nome: "Mario", cognome: "Rossi", eta: 0, password: "ee"};
-                $scope.grafica = {colore: "rosso", stile: "normale"};
-                $scope.elencoNomi = ["Andrea", "Marco", "Giovanni", "Roberto"];
-                $scope.persone = [
-                    { nome: "Andrea",   cognome: "Rossi",  citta: "Roma"    },
-                    { nome: "Marco",    cognome: "Verdi",  citta: "Milano"  },
-                    { nome: "Giovanni", cognome: "Neri",   citta: "Napoli"  },
-                    { nome: "Roberto",  cognome: "Gialli", citta: "Palermo" }
-                ];
-                $scope.elencoCitta = ["Roma", "Milano", "Napoli", "Palermo"];
-                $scope.saluta = function() {
-                    return "Buongiorno " + $scope.utente.nome + " " + $scope.utente.cognome + "!"
-                };
-            })
-            .controller("greetingController",
-            function($scope) {
-                $scope.salutiamoci = {generale: "Ciao a tutti"};
-            });
-</script>
 </body>
 </html>
