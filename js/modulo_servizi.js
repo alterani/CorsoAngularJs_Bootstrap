@@ -21,7 +21,11 @@ angular.module("modulo_servizi", [])
             {nome: "esercizio 8", codice: "8"},
             {nome: "esercizio 9", codice: "9"},
             {nome: "esercizio 10", codice: "10"},
-            {nome: "esercizio 11", codice: "11"}
+            {nome: "esercizio 11", codice: "11"},
+            {nome: "esercizio 12", codice: "12"},
+            {nome: "esercizio 13", codice: "13"},
+            {nome: "esercizio 14", codice: "14"},
+            {nome: "esercizio 15", codice: "15"}
         ];
 
         this.esercizioSelezionato = "";

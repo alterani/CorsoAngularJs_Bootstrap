@@ -91,10 +91,21 @@ angular.module("modulo_controller",[])
     .controller("greetingController", function($scope, elencoEsercizi) {
         $scope.salutiamoci = {generale: "Ciao a tutti"};
     })
-    .controller("listaUtentiCtrl", function($scope, utentiService) {
+    .controller("listaUtentiCtrl", function($scope, utentiService, utentiServiceNoreg) {
         $scope.utenti = utentiService.utenti;
+        $scope.utentiNonRegistrati = utentiServiceNoreg.utenti;
     })
     .controller("utenteCtrl", function($scope, $routeParams, utentiService, filterFilter) {
         var userId = $routeParams.userId;
         $scope.utente = filterFilter(utentiService.utenti, { id: userId })[0];
-    });
+    })
+    .controller("myCtrl2", function($scope) {
+  
+    $scope.persona = { nome: "Mario"};
+     
+    $scope.$watch("persona", function(newValue, oldValue) {
+     
+        if (newValue != oldValue)
+            alert("Il nuovo valore eeè " + newValue.nome);
+    },true);
+});

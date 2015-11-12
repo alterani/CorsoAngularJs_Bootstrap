@@ -5,7 +5,7 @@
  * Time: 14.52
  * To change this template use File | Settings | File Templates.
  */
-angular.module("myApp",["modulo_controller", "modulo_servizi", "modulo_factory", "ngRoute"])
+angular.module("myApp",["modulo_controller", "modulo_servizi", "modulo_factory", "ngRoute", "direttive_personalizzate"])
     .config(function($httpProvider) {
         $httpProvider.defaults.headers.common["Authorization"] = "Basic cGlwcG86cGx1dG8=";
     })

@@ -1,4 +1,4 @@
-<!-- http://www.html.it/pag/54118/configurazione-del-routing/ -->
+<!-- http://www.html.it/pag/54748/linking-nelle-direttive-angular/ -->
 
 <!DOCTYPE HTML PUBLIC “-//W3C//DTD HTML 4.01 Transitional//EN”> <html>
 <head>
@@ -176,6 +176,27 @@
     </div>
 
      <div ng-if="esercizioScelto=='esercizio 11'" ng-view></div>
+
+     <div ng-if="esercizioScelto=='esercizio 12'" ng-controller="myCtrl2">
+        <p>  Esempio funzione watch.. </p>
+
+        Nome: <input type="text" ng-model="persona.nome"></br>
+
+     </div>
+     <div ng-if="esercizioScelto=='esercizio 13'">
+        
+        <titoloenrico></titoloenrico>
+        <p> esmpio utilizzo direttive custom </p>
+
+     </div>
+
+     <div ng-if="esercizioScelto=='esercizio 14'" ng-controller="listaUtentiCtrl">
+            <enrico-lista-utenti city-list="utenti" ></enrico-lista-utenti>
+            <p >non registrati..</p> 
+            <enrico-lista-utenti city-list="utentiNonRegistrati" ></enrico-lista-utenti>  
+            <p >Utilizzo direttive custom</p>      
+    </div>
+
     </div> <!-- Fine div controlle controllerEsercizi-->
 
 </div>
@@ -188,6 +209,7 @@
 <script src="js/modulo_controllers.js"></script>
 <script src="js/modulo_servizi.js"></script>
 <script src="js/modulo_factory.js"></script>
+<script type="text/javascript" src="js/direttive_personalizzate.js"></script>
 
 </body>
 </html>
